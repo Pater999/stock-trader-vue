@@ -1,12 +1,41 @@
 <template>
-  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-      <a class="p-2 text-dark" href="#">Features</a>
-      <a class="p-2 text-dark" href="#">Enterprise</a>
-      <a class="p-2 text-dark" href="#">Support</a>
-      <a class="p-2 text-dark" href="#">Pricing</a>
-    </nav>
-    <a class="btn btn-outline-primary" href="#">Sign up</a>
+  <div>
+    <b-navbar toggleable="md" type="dark" variant="info" style="border:1px solid lightgrey; border-radius: 4px">
+      <b-navbar-brand>Stock trader</b-navbar-brand>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item>
+            <router-link class="nav-item" to="/" active-class="active" tag="li" exact>
+              <a class="nav-link">Home</a>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item>
+            <router-link class="nav-item" to="/portfolio" active-class="active" tag="li">
+              <a class="nav-link">Portfolio</a>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item>
+            <router-link class="nav-item" to="/stocks" active-class="active" tag="li">
+              <a class="nav-link">Stocks</a>
+            </router-link>
+          </b-nav-item>
+        </b-navbar-nav>
+
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown right>
+            <!-- Using 'button-content' slot -->
+            <template v-slot:button-content>
+              <em>User</em>
+            </template>
+            <b-dropdown-item>Profile</b-dropdown-item>
+            <b-dropdown-item>Sign Out</b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
   </div>
 </template>
