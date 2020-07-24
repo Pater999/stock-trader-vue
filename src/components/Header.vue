@@ -26,6 +26,9 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
+          <b-nav-item>
+            <strong>Bilancio: {{ funds }}€</strong>
+          </b-nav-item>
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>
@@ -42,6 +45,11 @@
 
 <script>
 export default {
+  computed: {
+    funds() {
+      return this.$store.getters.funds;
+    }
+  },
   methods: {
     logout() {
       this.$store.dispatch('logout');

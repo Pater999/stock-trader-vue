@@ -6,9 +6,9 @@
       </h5>
       <div class="card-body text-secondary">
         <div class="input-group mb-3">
-          <input type="number" class="form-control" placeholder="Quantità" v-model="quantity" />
+          <input type="number" class="form-control" :class="{ danger: insufficientFunds }" placeholder="Quantità" v-model="quantity" />
           <div class="input-group-append">
-            <button class="btn" style="background-color: #32DE8A" type="button" @click="buyStock()" :disabled="quantity <= 0 || !Number.isInteger(parseFloat(quantity))">Compra</button>
+            <button class="btn" style="background-color: #32DE8A" type="button" @click="buyStock()" :disabled="quantity <= 0 || !Number.isInteger(parseFloat(quantity)) || insufficientFunds">Compra</button>
           </div>
         </div>
       </div>
@@ -22,6 +22,14 @@ export default {
     return {
       quantity: 0
     };
+  },
+  computed: {
+    funds() {
+      return this.$store.getters.funds;
+    },
+    insufficientFunds() {
+      return this.quantity * this.stock.price > this.funds;
+    }
   },
   methods: {
     buyStock() {
@@ -38,3 +46,12 @@ export default {
   props: ['stock']
 };
 </script>
+
+<style scoped>
+.danger {
+  border: 2px solid red;
+}
+.danger:focus {
+  border-bottom: 3px solid red;
+}
+</style>

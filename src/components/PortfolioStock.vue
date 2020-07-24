@@ -6,9 +6,10 @@
       </h5>
       <div class="card-body text-secondary">
         <div class="input-group mb-3">
-          <input type="number" class="form-control" placeholder="Quantità" v-model="quantity" />
+          <input type="number" class="form-control" :class="{ danger: insufficientQuantity }" placeholder="Quantità" v-model="quantity" />
           <div class="input-group-append">
-            <button class="btn" style="background-color: #627C85" type="button" @click="sellStock()" :disabled="quantity <= 0 || !Number.isInteger(parseFloat(quantity))">Vendi</button>
+            <button class="btn" style="background-color: #627C85" type="button" @click="sellStock()" :disabled="insufficientQuantity || quantity <= 0 || !Number.isInteger(parseFloat(quantity))">Vendi</button>
+            {{ insufficientQuantity }}
           </div>
         </div>
       </div>
@@ -24,6 +25,11 @@ export default {
     return {
       quantity: 0
     };
+  },
+  computed: {
+    insufficientQuantity() {
+      return this.quantity > this.stock.quantity;
+    }
   },
   methods: {
     ...mapActions(['sellStock']),
@@ -41,3 +47,12 @@ export default {
   props: ['stock']
 };
 </script>
+
+<style scoped>
+.danger {
+  border: 2px solid red;
+}
+.danger:focus {
+  border-bottom: 3px solid red;
+}
+</style>
