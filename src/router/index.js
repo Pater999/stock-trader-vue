@@ -11,7 +11,7 @@ const routes = [
     name: 'Home',
     component: Home,
     beforeEnter(to, from, next) {
-      if (store.state.idToken) next();
+      if (store.state.users.idToken) next();
       else next('/login');
     }
   },
@@ -20,7 +20,7 @@ const routes = [
     name: 'portfolio',
     component: () => import('../views/Portfolio.vue'),
     beforeEnter(to, from, next) {
-      if (store.state.idToken) next();
+      if (store.state.users.idToken) next();
       else next('/login');
     }
   },
@@ -29,7 +29,7 @@ const routes = [
     name: 'stocks',
     component: () => import('../views/Stocks.vue'),
     beforeEnter(to, from, next) {
-      if (store.state.idToken) next();
+      if (store.state.users.idToken) next();
       else next('/login');
     }
   },

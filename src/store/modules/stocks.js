@@ -18,9 +18,9 @@ const actions = {
     commit('BUY_STOCK', order);
   },
   initStocks: ({ commit, rootState }) => {
-    if (!rootState.idToken) return;
+    if (!rootState.users.idToken) return;
 
-    axios.get('https://vue-js-http-97a40.firebaseio.com/stocks.json' + '?auth=' + rootState.idToken).then((response) => {
+    axios.get('https://vue-js-http-97a40.firebaseio.com/stocks.json' + '?auth=' + rootState.users.idToken).then((response) => {
       const data = response.data;
       const stocks = [];
       for (let key in data) {
