@@ -2,13 +2,13 @@
   <div class="col-sm-6 col-md-4">
     <div class="card border-secondary" style="margin-bottom:20px; width:100%">
       <h5 class="card-header">
-        {{ stock.name }} <small>( Prezzo: {{ stock.price }}€ )</small>
+        {{ stock.name }} <small>( Prezzo: {{ stock.price }}€ | Quantità: {{ stock.quantity }} )</small>
       </h5>
       <div class="card-body text-secondary">
         <div class="input-group mb-3">
           <input type="number" class="form-control" placeholder="Quantità" v-model="quantity" />
           <div class="input-group-append">
-            <button class="btn btn-success" type="button" @click="buyStock()" :disabled="quantity <= 0 || !Number.isInteger(parseFloat(quantity))">Compra</button>
+            <button class="btn btn-primary" type="button" @click="sellStock()" :disabled="quantity <= 0 || !Number.isInteger(parseFloat(quantity))">Vendi</button>
           </div>
         </div>
       </div>
@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
@@ -24,14 +26,15 @@ export default {
     };
   },
   methods: {
-    buyStock() {
+    ...mapActions(['sellStock']),
+    sellStock() {
       const order = {
         stockId: this.stock.id,
         stockPrice: this.stock.price,
-        quantity: parseInt(this.quantity)
+        quantity: this.quantity
       };
-      this.$store.dispatch('buyStock', order);
-      this.quantity = 0;
+      console.log(order);
+      this.sellStock();
     }
   },
   // Proprietà dall'esterno
