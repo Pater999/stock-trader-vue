@@ -3,13 +3,14 @@
     <form class="form-signin" @submit="onSubmit">
       <div class="text-center">
         <img class="mb-4" src="../assets/avatar.svg" alt="" width="130" height="130" />
+        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
       </div>
-      <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+
       <label for="inputEmail" class="sr-only">Indirizzo email</label>
       <input type="email" v-model="form.email" class="form-control" placeholder="Indirizzo email" required autofocus />
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" v-model="form.password" pattern=".{6,}" class="form-control" placeholder="Password" required />
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Accedi</button>
+      <button class="btn btn-lg btn-block" style="background-color: #32DE8A" type="submit">Accedi</button>
       <p class="mt-5 mb-3 text-muted text-center">Non hai un account? <router-link to="/register" tag="a">Registrati</router-link></p>
     </form>
   </div>
@@ -37,9 +38,12 @@ export default {
 <style scoped>
 .form-signin {
   width: 100%;
-  max-width: 330px;
+  max-width: 360px;
   padding: 15px;
   margin: auto;
+  border: solid 1px lightgray;
+  background-color: #a2e8dd;
+  border-radius: 10px;
 }
 .form-signin .checkbox {
   font-weight: 400;

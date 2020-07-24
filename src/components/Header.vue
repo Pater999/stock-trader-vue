@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="dark" variant="info" style="border:1px solid lightgrey; border-radius: 4px">
+    <b-navbar toggleable="md" type="dark" style="border:1px solid lightgrey; border-radius: 4px; background-color: #35524A">
       <b-navbar-brand>Stock trader</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

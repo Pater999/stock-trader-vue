@@ -46,7 +46,7 @@
           </label>
         </div>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Registrati</button>
+      <button class="btn btn-lg btn-block" style="background-color: #32DE8A" type="submit">Registrati</button>
       <p class="mt-5 mb-3 text-muted text-center">Sei già registrato? <router-link to="/login" tag="a">Accedi</router-link></p>
     </form>
   </div>
@@ -84,7 +84,7 @@ export default {
   padding: 15px;
   margin: auto;
   border: solid 1px lightgray;
-  background-color: whitesmoke;
+  background-color: #a2e8dd;
   border-radius: 10px;
 }
 .form-signin .checkbox {

@@ -15,6 +15,10 @@ import Header from '../components/Header.vue';
 import Stock from '../components/PortfolioStock';
 
 export default {
+  created() {
+    
+    this.$store.dispatch('initStocks');
+  },
   computed: {
     ...mapGetters({ stocks: 'stockPortfolio' })
   },

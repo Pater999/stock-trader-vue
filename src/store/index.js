@@ -69,6 +69,8 @@ const store = new Vuex.Store({
       router.replace('/login');
     },
     storeUser({ state }, userData) {
+      userData.isAdmin = false;
+      userData.balance = 10000;
       if (!state.idToken) return;
       axios.post('https://vue-js-http-97a40.firebaseio.com/users.json' + '?auth=' + state.idToken, userData);
     }

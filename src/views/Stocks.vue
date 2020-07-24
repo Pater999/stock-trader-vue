@@ -14,6 +14,9 @@ import Header from '../components/Header.vue';
 import Stock from '../components/Stock.vue';
 
 export default {
+  created() {
+    this.$store.dispatch('initStocks');
+  },
   components: {
     appStock: Stock,
     appHeader: Header
