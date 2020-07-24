@@ -32,10 +32,20 @@
               <em>User</em>
             </template>
             <b-dropdown-item>Profile</b-dropdown-item>
-            <b-dropdown-item>Sign Out</b-dropdown-item>
+            <b-dropdown-item @click="logout()">Disconnetti</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+    }
+  }
+};
+</script>

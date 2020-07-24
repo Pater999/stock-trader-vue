@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import store from '../store';
 
 Vue.use(VueRouter);
 
@@ -8,17 +9,29 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeEnter(to, from, next) {
+      if (store.state.idToken) next();
+      else next('/login');
+    }
   },
   {
     path: '/portfolio',
     name: 'portfolio',
-    component: () => import('../views/Portfolio.vue')
+    component: () => import('../views/Portfolio.vue'),
+    beforeEnter(to, from, next) {
+      if (store.state.idToken) next();
+      else next('/login');
+    }
   },
   {
     path: '/stocks',
     name: 'stocks',
-    component: () => import('../views/Stocks.vue')
+    component: () => import('../views/Stocks.vue'),
+    beforeEnter(to, from, next) {
+      if (store.state.idToken) next();
+      else next('/login');
+    }
   },
   {
     path: '/login',

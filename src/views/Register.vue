@@ -71,7 +71,7 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      alert(JSON.stringify(this.form));
+      this.$store.dispatch('signup', this.form);
     }
   }
 };
