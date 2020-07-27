@@ -6,6 +6,7 @@ import Header from '../components/Header.vue';
 const Home = () => import('../views/Home.vue');
 const Portfolio = () => import('../views/Portfolio.vue');
 const Stocks = () => import('../views/Stocks.vue');
+const Admin = () => import('../views/Admin.vue');
 
 Vue.use(VueRouter);
 
@@ -35,6 +36,16 @@ const routes = [
     beforeEnter(to, from, next) {
       if (store.state.users.idToken) next();
       else next('/login');
+    }
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    components: { default: Admin, 'header-top': Header },
+    beforeEnter(to, from, next) {
+      if (store.state.users.idToken) {
+        next();
+      } else next('/login');
     }
   },
   {

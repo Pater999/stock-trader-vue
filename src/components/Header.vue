@@ -13,13 +13,18 @@
             </router-link>
           </b-nav-item>
           <b-nav-item>
+            <router-link class="nav-item" to="/stocks" active-class="active" tag="li">
+              <a class="nav-link">Stocks</a>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item>
             <router-link class="nav-item" to="/portfolio" active-class="active" tag="li">
               <a class="nav-link">Portfolio</a>
             </router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link class="nav-item" to="/stocks" active-class="active" tag="li">
-              <a class="nav-link">Stocks</a>
+            <router-link class="nav-item" to="/admin" active-class="active" tag="li">
+              <a class="nav-link">Admin</a>
             </router-link>
           </b-nav-item>
         </b-navbar-nav>

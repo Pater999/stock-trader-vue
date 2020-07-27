@@ -87,8 +87,15 @@ const actions = {
   }
 };
 
+const getters = {
+  user: (state) => {
+    return state.user;
+  }
+};
+
 export default {
   state,
   actions,
-  mutations
+  mutations,
+  getters
 };

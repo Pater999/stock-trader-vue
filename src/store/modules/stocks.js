@@ -9,7 +9,10 @@ const mutations = {
     state.stocks = stocks;
   },
   RND_STOCKS(state) {
-    console.log(state);
+    // eslint-disable-next-line no-unused-vars
+    Object.entries(state.stocks).forEach(([key, value]) => {
+      value.price = Math.round(value.price * (1 + Math.random() - 0.5) * 100) / 100;
+    });
   }
 };
 
@@ -38,8 +41,16 @@ const actions = {
       commit('SET_STOCKS', stocks);
     });
   },
-  randomizeStocks: ({ commit }) => {
+  randomizeStocks: ({ commit, rootState }) => {
+    if (!rootState.users.idToken) return;
+
     commit('RND_STOCKS');
+
+    const data = {};
+    Object.entries(state.stocks).forEach(([key, value]) => {
+      data[key] = { name: value.name, price: value.price };
+    });
+    axios.put('https://vue-js-http-97a40.firebaseio.com/stocks/.json' + '?auth=' + rootState.users.idToken, data);
   }
 };
 

@@ -2,6 +2,14 @@
   <div>
     <div class="row" style="margin-top: 20px">
       <div class="col-md-12">
+        <div v-if="stockPortfolio.rows == 0">
+          <b-alert show variant="warning">
+            <h4 class="alert-heading">Non possiedi nessuno stock</h4>
+            <p>
+              Sembra che tu non possegga nessuno stock! Visita la pagina stocks per comprarne qualcuno!
+            </p>
+          </b-alert>
+        </div>
         <div class="row" style="min-height: 558px"><app-stock v-for="stock in stockPortfolio.entries" :key="stock.id" :stock="stock"></app-stock></div>
       </div>
     </div>
