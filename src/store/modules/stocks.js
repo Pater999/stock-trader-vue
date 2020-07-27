@@ -22,7 +22,6 @@ const actions = {
       funds: rootState.portfolio.funds,
       stockPortfolio: rootState.portfolio.stocks
     };
-
     axios.put('https://vue-js-http-97a40.firebaseio.com/StocksUsers/' + rootState.users.userId + '.json' + '?auth=' + rootState.users.idToken, data);
   },
   initStocks: ({ commit, rootState }) => {
@@ -34,9 +33,9 @@ const actions = {
       for (let key in data) {
         const stock = data[key];
         stock.id = key;
-        stocks.push(stock);
+        stocks[stock.id] = stock;
       }
-      commit('SET_STOCKS', response.data);
+      commit('SET_STOCKS', stocks);
     });
   },
   randomizeStocks: ({ commit }) => {

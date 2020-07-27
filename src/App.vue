@@ -1,9 +1,7 @@
 <template>
   <div class="container-fluid">
     <router-view name="header-top"></router-view>
-    <div class="row" style="margin-top: 20px">
-      <transition name="slide" mode="out-in">><router-view></router-view></transition>
-    </div>
+    <transition name="slide" mode="out-in">><router-view></router-view></transition>
   </div>
 </template>
 

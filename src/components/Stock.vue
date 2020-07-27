@@ -1,7 +1,7 @@
 <template>
   <div class="col-sm-6 col-md-4">
     <div class="card border-secondary" style="margin-bottom:20px; width:100%">
-      <h5 class="card-header" style="background-color: #32DE8A">
+      <h5 class="card-header" style="background-color: #32DE8A; height: 70px">
         {{ stock.name }} <small>( Prezzo: {{ stock.price }}€ )</small>
       </h5>
       <div class="card-body text-secondary">

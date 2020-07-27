@@ -24,7 +24,7 @@ const mutations = {
     if (record.quantity > quantity) {
       record.quantity -= quantity;
     } else {
-      state.stocks.splice(state.stocks.indexOf(record));
+      state.stocks.splice(state.stocks.indexOf(record), 1);
     }
     state.funds += stockPrice * quantity;
     state.funds = Math.round((state.funds + Number.EPSILON) * 100) / 100;
@@ -36,13 +36,15 @@ const mutations = {
 };
 
 const actions = {
-  sellStock({ commit, rootState }, order) {
+  sellStock({ commit, state, rootState }, order) {
     commit('SELL_STOCK', order);
 
     const data = {
-      funds: rootState.portfolio.funds,
-      stockPortfolio: rootState.portfolio.stocks
+      funds: state.funds,
+      stockPortfolio: state.stocks
     };
+
+    console.log(data);
 
     axios.put('https://vue-js-http-97a40.firebaseio.com/StocksUsers/' + rootState.users.userId + '.json' + '?auth=' + rootState.users.idToken, data);
   }

@@ -47,6 +47,7 @@ const actions = {
       localStorage.setItem('userId', res.data.localId);
       localStorage.setItem('expirationDate', Date.now() + res.data.expiresIn * 1000);
       dispatch('setLogoutTimer', res.data.expiresIn);
+      dispatch('initStocks');
       dispatch('loadUserData');
       router.replace('/');
     });
