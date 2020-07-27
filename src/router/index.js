@@ -1,7 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
 import store from '../store';
+import Header from '../components/Header.vue';
+
+const Home = () => import('../views/Home.vue');
+const Portfolio = () => import('../views/Portfolio.vue');
+const Stocks = () => import('../views/Stocks.vue');
 
 Vue.use(VueRouter);
 
@@ -9,7 +13,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    components: { default: Home, 'header-top': Header },
     beforeEnter(to, from, next) {
       if (store.state.users.idToken) next();
       else next('/login');
@@ -18,7 +22,7 @@ const routes = [
   {
     path: '/portfolio',
     name: 'portfolio',
-    component: () => import('../views/Portfolio.vue'),
+    components: { default: Portfolio, 'header-top': Header },
     beforeEnter(to, from, next) {
       if (store.state.users.idToken) next();
       else next('/login');
@@ -27,7 +31,7 @@ const routes = [
   {
     path: '/stocks',
     name: 'stocks',
-    component: () => import('../views/Stocks.vue'),
+    components: { default: Stocks, 'header-top': Header },
     beforeEnter(to, from, next) {
       if (store.state.users.idToken) next();
       else next('/login');
