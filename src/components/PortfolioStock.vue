@@ -8,8 +8,7 @@
         <div class="input-group mb-3">
           <input type="number" class="form-control" :class="{ danger: insufficientQuantity }" placeholder="Quantità" v-model="quantity" />
           <div class="input-group-append">
-            <button class="btn" style="background-color: #627C85" type="button" @click="sellStock()" :disabled="insufficientQuantity || quantity <= 0 || !Number.isInteger(parseFloat(quantity))">Vendi</button>
-            {{ insufficientQuantity }}
+            <button class="btn" style="background-color: #627C85" type="button" @click="vendiStock()" :disabled="insufficientQuantity || quantity <= 0 || !Number.isInteger(parseFloat(quantity))">Vendi</button>
           </div>
         </div>
       </div>
@@ -33,14 +32,14 @@ export default {
   },
   methods: {
     ...mapActions(['sellStock']),
-    sellStock() {
+    vendiStock() {
       const order = {
         stockId: this.stock.id,
         stockPrice: this.stock.price,
         quantity: this.quantity
       };
-      console.log(order);
-      this.sellStock();
+      this.sellStock(order);
+      this.quantity = 0;
     }
   },
   // Proprietà dall'esterno

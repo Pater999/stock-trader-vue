@@ -14,8 +14,16 @@ const mutations = {
 };
 
 const actions = {
-  buyStock: ({ commit }, order) => {
+  buyStock: ({ commit, rootState }, order) => {
+    if (!rootState.users.idToken) return;
     commit('BUY_STOCK', order);
+
+    const data = {
+      funds: rootState.portfolio.funds,
+      stockPortfolio: rootState.portfolio.stocks
+    };
+
+    axios.put('https://vue-js-http-97a40.firebaseio.com/StocksUsers/' + rootState.users.userId + '.json' + '?auth=' + rootState.users.idToken, data);
   },
   initStocks: ({ commit, rootState }) => {
     if (!rootState.users.idToken) return;

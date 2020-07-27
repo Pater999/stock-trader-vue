@@ -1,5 +1,6 @@
 import axios from 'axios';
 import router from '../../router';
+import Axios from 'axios';
 
 const state = {
   idToken: null,
@@ -33,6 +34,7 @@ const actions = {
       localStorage.setItem('token', res.data.idToken);
       localStorage.setItem('userId', res.data.localId);
       localStorage.setItem('expirationDate', Date.now() + res.data.expiresIn * 1000);
+      authData.userId = res.data.localId;
       dispatch('storeUser', authData);
       dispatch('setLogoutTimer', res.data.expiresIn);
       router.replace('/');
@@ -45,16 +47,19 @@ const actions = {
       localStorage.setItem('userId', res.data.localId);
       localStorage.setItem('expirationDate', Date.now() + res.data.expiresIn * 1000);
       dispatch('setLogoutTimer', res.data.expiresIn);
+      dispatch('loadUserData');
       router.replace('/');
     });
   },
-  tryAutoLogin({ commit }) {
+  tryAutoLogin({ commit, dispatch }) {
     const token = localStorage.getItem('token');
     if (!token) return;
     const expirationDate = localStorage.getItem('expirationDate');
     if (Date.now() >= expirationDate) return;
     const userId = localStorage.getItem('userId');
     commit('authUser', { token: token, userId: userId });
+    dispatch('initStocks');
+    dispatch('loadUserData');
     router.replace('/');
   },
   logout({ commit }) {
@@ -64,9 +69,20 @@ const actions = {
   },
   storeUser({ state }, userData) {
     userData.isAdmin = false;
-    userData.balance = 10000;
+    delete userData.password;
+    delete userData.confirmPassword;
     if (!state.idToken) return;
     axios.post('https://vue-js-http-97a40.firebaseio.com/users.json' + '?auth=' + state.idToken, userData);
+  },
+  loadUserData({ commit, rootState }) {
+    if (!rootState.users.idToken) return;
+    Axios.get('https://vue-js-http-97a40.firebaseio.com/StocksUsers/' + rootState.users.userId + '.json' + '?auth=' + rootState.users.idToken).then((response) => {
+      const portfolio = {
+        stockPortfolio: response.data.stockPortfolio,
+        funds: response.data.funds
+      };
+      commit('SET_PORTFOLIO', portfolio);
+    });
   }
 };
 
