@@ -1,12 +1,17 @@
 import axios from 'axios';
 
 const state = {
-  stocks: []
+  stocks: [],
+  loading: false
 };
 
 const mutations = {
+  SET_LOADING(state) {
+    state.loading = true;
+  },
   SET_STOCKS(state, stocks) {
     state.stocks = stocks;
+    state.loading = false;
   },
   RND_STOCKS(state) {
     // eslint-disable-next-line no-unused-vars
@@ -30,6 +35,7 @@ const actions = {
   initStocks: ({ commit, rootState }) => {
     if (!rootState.users.idToken) return;
 
+    commit('SET_LOADING');
     axios.get('https://vue-js-http-97a40.firebaseio.com/stocks.json' + '?auth=' + rootState.users.idToken).then((response) => {
       const data = response.data;
       const stocks = [];
@@ -57,6 +63,9 @@ const actions = {
 const getters = {
   stocks: (state) => {
     return state.stocks;
+  },
+  stocksLoading: (state) => {
+    return state.loading;
   }
 };
 

@@ -6,13 +6,17 @@ const state = {
   idToken: null,
   userId: null,
   user: null,
-  error: null
+  error: null,
+  isAdmin: false
 };
 
 const mutations = {
   authUser(state, userData) {
     state.idToken = userData.token;
     state.userId = userData.userId;
+  },
+  setAdmin(state, isAdmin) {
+    state.isAdmin = isAdmin;
   },
   storeUser(state, user) {
     state.user = user;
@@ -59,6 +63,7 @@ const actions = {
         localStorage.setItem('expirationDate', Date.now() + res.data.expiresIn * 1000);
         dispatch('setLogoutTimer', res.data.expiresIn);
         dispatch('initStocks');
+        dispatch('checkAdmin');
         dispatch('loadUserData');
         router.replace('/');
       })
@@ -74,6 +79,7 @@ const actions = {
     const userId = localStorage.getItem('userId');
     commit('authUser', { token: token, userId: userId });
     dispatch('initStocks');
+    dispatch('checkAdmin');
     dispatch('loadUserData');
     router.replace('/');
   },
@@ -98,6 +104,13 @@ const actions = {
       };
       commit('SET_PORTFOLIO', portfolio);
     });
+  },
+  checkAdmin({ commit, rootState }) {
+    if (!rootState.users.idToken) return;
+    Axios.get('https://vue-js-http-97a40.firebaseio.com/users.json/' + '?orderBy="userId"&equalTo="' + rootState.users.userId + '"&auth=' + rootState.users.idToken).then((response) => {
+      const isAdmin = response.data[Object.keys(response.data)[0]].isAdmin;
+      commit('setAdmin', isAdmin);
+    });
   }
 };
 
@@ -110,6 +123,9 @@ const getters = {
   },
   error: (state) => {
     return state.error;
+  },
+  isAdmin: (state) => {
+    return state.isAdmin;
   }
 };
 

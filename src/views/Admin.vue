@@ -3,10 +3,14 @@
     <div class="row" style="margin-top: 20px">
       <div class="col-md-12"><b-button @click="prezziRandom()" block variant="success">Aggiorna prezzi random</b-button></div>
     </div>
+
     <div class="row" style="margin-top: 20px">
       <div class="col-md-12">
-        <h2>Lista utenti</h2>
-        <b-table id="my-table" :items="items" :per-page="perPage" :current-page="currentPage" small></b-table>
+        <div v-if="rows == 0" class="d-flex justify-content-center mb-3" style="margin-top:60px">
+          <b-spinner label="Loading..."></b-spinner>
+        </div>
+        <h2 v-if="rows > 0">Lista utenti</h2>
+        <b-table id="my-table" :items="users" :per-page="perPage" :current-page="currentPage" small></b-table>
         <div v-if="rows / perPage > 1"><b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="my-table" align="fill"></b-pagination></div>
       </div>
     </div>
@@ -15,28 +19,35 @@
 
 <script>
 import { mapActions } from 'vuex';
+import axios from 'axios';
 
 export default {
   data() {
     return {
       perPage: 20,
       currentPage: 1,
-      items: [
-        { id: 1, first_name: 'Fred', last_name: 'Flintstone' },
-        { id: 2, first_name: 'Wilma', last_name: 'Flintstone' },
-        { id: 3, first_name: 'Barney', last_name: 'Rubble' },
-        { id: 4, first_name: 'Betty', last_name: 'Rubble' },
-        { id: 5, first_name: 'Pebbles', last_name: 'Flintstone' },
-        { id: 6, first_name: 'Bamm Bamm', last_name: 'Rubble' },
-        { id: 7, first_name: 'The Great', last_name: 'Gazzoo' },
-        { id: 8, first_name: 'Rockhead', last_name: 'Slate' },
-        { id: 9, first_name: 'Pearl', last_name: 'Slaghoople' }
-      ]
+      users: []
     };
+  },
+  mounted() {
+    axios
+      .get('https://vue-js-http-97a40.firebaseio.com/users/.json' + '?auth=' + this.idToken)
+      .then((response) => {
+        // eslint-disable-next-line no-unused-vars
+        Object.entries(response.data).forEach(([key, value]) => {
+          this.users.push(value);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
   computed: {
     rows() {
-      return this.items.length;
+      return this.users.length;
+    },
+    idToken() {
+      return this.$store.getters.idToken;
     }
   },
   methods: {

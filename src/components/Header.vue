@@ -23,7 +23,7 @@
             </router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link class="nav-item" to="/admin" active-class="active" tag="li">
+            <router-link v-if="isAdmin" class="nav-item" to="/admin" active-class="active" tag="li">
               <a class="nav-link">Admin</a>
             </router-link>
           </b-nav-item>
@@ -37,9 +37,8 @@
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>
-              <em>User</em>
+              <em>Utente</em>
             </template>
-            <b-dropdown-item>Profile</b-dropdown-item>
             <b-dropdown-item @click="logout()">Disconnetti</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -53,6 +52,9 @@ export default {
   computed: {
     funds() {
       return this.$store.getters.funds;
+    },
+    isAdmin() {
+      return this.$store.getters.isAdmin;
     }
   },
   methods: {

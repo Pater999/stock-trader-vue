@@ -44,7 +44,8 @@ const routes = [
     components: { default: Admin, 'header-top': Header },
     beforeEnter(to, from, next) {
       if (store.state.users.idToken) {
-        next();
+        if (store.state.users.isAdmin) next();
+        else next('');
       } else next('/login');
     }
   },
