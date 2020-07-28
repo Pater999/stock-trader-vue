@@ -5,7 +5,8 @@ import Axios from 'axios';
 const state = {
   idToken: null,
   userId: null,
-  user: null
+  user: null,
+  error: null
 };
 
 const mutations = {
@@ -19,6 +20,9 @@ const mutations = {
   clearAuthData(state) {
     state.idToken = null;
     state.userId = null;
+  },
+  storeError(state, data) {
+    state.error = data;
   }
 };
 
@@ -29,28 +33,38 @@ const actions = {
     }, expirationTime * 1000);
   },
   signup({ commit, dispatch }, authData) {
-    axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAwcOr6WLRbRJ8A00amqZJGNSCcEhLDEK0', { email: authData.email, password: authData.password, returnSecureToken: true }).then((res) => {
-      commit('authUser', { token: res.data.idToken, userId: res.data.localId });
-      localStorage.setItem('token', res.data.idToken);
-      localStorage.setItem('userId', res.data.localId);
-      localStorage.setItem('expirationDate', Date.now() + res.data.expiresIn * 1000);
-      authData.userId = res.data.localId;
-      dispatch('storeUser', authData);
-      dispatch('setLogoutTimer', res.data.expiresIn);
-      router.replace('/');
-    });
+    axios
+      .post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAwcOr6WLRbRJ8A00amqZJGNSCcEhLDEK0', { email: authData.email, password: authData.password, returnSecureToken: true })
+      .then((res) => {
+        commit('authUser', { token: res.data.idToken, userId: res.data.localId });
+        localStorage.setItem('token', res.data.idToken);
+        localStorage.setItem('userId', res.data.localId);
+        localStorage.setItem('expirationDate', Date.now() + res.data.expiresIn * 1000);
+        authData.userId = res.data.localId;
+        dispatch('storeUser', authData);
+        dispatch('setLogoutTimer', res.data.expiresIn);
+        router.replace('/');
+      })
+      .catch((error) => {
+        commit('storeError', error);
+      });
   },
   login({ commit, dispatch }, authData) {
-    axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAwcOr6WLRbRJ8A00amqZJGNSCcEhLDEK0', { email: authData.email, password: authData.password, returnSecureToken: true }).then((res) => {
-      commit('authUser', { token: res.data.idToken, userId: res.data.localId });
-      localStorage.setItem('token', res.data.idToken);
-      localStorage.setItem('userId', res.data.localId);
-      localStorage.setItem('expirationDate', Date.now() + res.data.expiresIn * 1000);
-      dispatch('setLogoutTimer', res.data.expiresIn);
-      dispatch('initStocks');
-      dispatch('loadUserData');
-      router.replace('/');
-    });
+    axios
+      .post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAwcOr6WLRbRJ8A00amqZJGNSCcEhLDEK0', { email: authData.email, password: authData.password, returnSecureToken: true })
+      .then((res) => {
+        commit('authUser', { token: res.data.idToken, userId: res.data.localId });
+        localStorage.setItem('token', res.data.idToken);
+        localStorage.setItem('userId', res.data.localId);
+        localStorage.setItem('expirationDate', Date.now() + res.data.expiresIn * 1000);
+        dispatch('setLogoutTimer', res.data.expiresIn);
+        dispatch('initStocks');
+        dispatch('loadUserData');
+        router.replace('/');
+      })
+      .catch((error) => {
+        commit('storeError', error);
+      });
   },
   tryAutoLogin({ commit, dispatch }) {
     const token = localStorage.getItem('token');
@@ -88,8 +102,14 @@ const actions = {
 };
 
 const getters = {
+  idToken: (state) => {
+    return state.idToken;
+  },
   user: (state) => {
     return state.user;
+  },
+  error: (state) => {
+    return state.error;
   }
 };
 

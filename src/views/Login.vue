@@ -10,8 +10,11 @@
       <input type="email" v-model="form.email" class="form-control" placeholder="Indirizzo email" required autofocus />
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" v-model="form.password" pattern=".{6,}" class="form-control" placeholder="Password" required />
+
       <button class="btn btn-lg btn-block" style="background-color: #32DE8A" type="submit">Accedi</button>
-      <p class="mt-5 mb-3 text-muted text-center">Non hai un account? <router-link to="/register" tag="a">Registrati</router-link></p>
+      <b-alert style="margin-top:20px" variant="warning" :show="errore != null" dismissible @dismissed="errore = null" fade>Email o password errati!</b-alert>
+
+      <p class="mb-3 text-muted text-center" style="margin-top:20px">Non hai un account? <router-link to="/register" tag="a">Registrati</router-link></p>
     </form>
   </div>
 </template>
@@ -30,6 +33,16 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       this.$store.dispatch('login', { email: this.form.email, password: this.form.password });
+    }
+  },
+  computed: {
+    errore: {
+      get() {
+        return this.$store.getters.error;
+      },
+      set(value) {
+        this.$store.commit('storeError', value);
+      }
     }
   }
 };

@@ -15,17 +15,26 @@
       <div class="form-row">
         <div class="form-group col-md-12">
           <label for="inputEmail4">Email*</label>
-          <input v-model="form.email" type="email" class="form-control" id="inputEmail4" placeholder="Email" required />
+          <b-form-input id="inputEmail4" v-model="form.email" :state="validEmail" aria-describedby="input-live-help input-live-feedback" placeholder="Email" trim></b-form-input>
+          <b-form-invalid-feedback id="inputEmail4-feedback">
+            Devi inserire una mail valida.
+          </b-form-invalid-feedback>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="inputPassword">Password*</label>
-          <input v-model="form.password" type="password" class="form-control" id="inputPassword" placeholder="Password" pattern=".{6,}" required />
+          <b-form-input id="inputPassword" type="password" v-model="form.password" :state="validPassword" aria-describedby="input-live-help input-live-feedback" placeholder="Password" trim></b-form-input>
+          <b-form-invalid-feedback id="inputPassword-feedback">
+            La password deve avere almeno 6 caratteri.
+          </b-form-invalid-feedback>
         </div>
         <div class="form-group col-md-6">
           <label for="inputPassword2">Conferma password*</label>
-          <input v-model="form.confirmPassword" type="password" class="form-control" id="inputPassword2" placeholder="Conferma password" pattern=".{6,}" required />
+          <b-form-input id="inputPassword2" type="password" v-model="form.confirmPassword" :state="validConfirmPassword" aria-describedby="input-live-help input-live-feedback" placeholder="Conferma password" trim></b-form-input>
+          <b-form-invalid-feedback id="inputPassword2-feedback">
+            Le password non corrispondono.
+          </b-form-invalid-feedback>
         </div>
       </div>
       <div class="form-row">
@@ -35,7 +44,10 @@
         </div>
         <div class="form-group col-md-6">
           <label for="inputYears">Età*</label>
-          <input v-model="form.years" type="number" class="form-control" id="inputYears" required />
+          <b-form-input id="inputYears" type="number" v-model="form.years" :state="validYears" aria-describedby="input-live-help input-live-feedback" placeholder="Età" trim></b-form-input>
+          <b-form-invalid-feedback id="inputYears-feedback">
+            Devi inserire un numero maggiore di 18.
+          </b-form-invalid-feedback>
         </div>
       </div>
       <div class="form-group">
@@ -46,7 +58,10 @@
           </label>
         </div>
       </div>
-      <button class="btn btn-lg btn-block" style="background-color: #32DE8A" type="submit">Registrati</button>
+      <button class="btn btn-lg btn-block" :disabled="!validEmail || !validPassword || !validConfirmPassword || !validYears" style="background-color: #32DE8A" type="submit">Registrati</button>
+
+      <b-alert style="margin-top:20px" variant="warning" :show="errore != null" dismissible @dismissed="errore = null" fade>La mail inserita è già stata utilizzata!</b-alert>
+
       <p class="mt-5 mb-3 text-muted text-center">Sei già registrato? <router-link to="/login" tag="a">Accedi</router-link></p>
     </form>
   </div>
@@ -72,6 +87,30 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       this.$store.dispatch('signup', this.form);
+    }
+  },
+  computed: {
+    validEmail() {
+      let mailformat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+      if (this.form.email.match(mailformat)) return true;
+      else return false;
+    },
+    validPassword() {
+      return this.form.password.length > 5 ? true : false;
+    },
+    validConfirmPassword() {
+      return this.form.password == this.form.confirmPassword && this.form.confirmPassword.length > 5 ? true : false;
+    },
+    validYears() {
+      return this.form.years > 17 ? true : false;
+    },
+    errore: {
+      get() {
+        return this.$store.getters.error;
+      },
+      set(value) {
+        this.$store.commit('storeError', value);
+      }
     }
   }
 };
